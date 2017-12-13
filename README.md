@@ -1,4 +1,3 @@
 # java
 Homework Assignments From CSD 141
-Some of the assignemnts. 
-
+Fall 2017
