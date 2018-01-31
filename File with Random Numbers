@@ -1,0 +1,76 @@
+/*
+File with Random Numbers
+Write a program that generates 100 random integers in a given range and stores the integers in a file with a given name. When numbers are written into the file each integer
+is placed on a separate line.
+Requirements
+The program must:
+1. Ask user for a file name where the numbers will be written to. If the file does not exist it must be created. If the file does exist its content is being replaced.
+2. Ask user to provide the range of random integers to be generated.
+ Use exception mechanism to validate user input to be of correct type. See InputValidation.java to get example of how to do that. Use two validation loops to make the user provide
+ Both numbers of the range provided by the user must be positive integers. Continue asking user for input until the numbers fit the requirements.
+3. The user may give the numbers of the range in incorrect order. Make sure that lower limit is smaller than upper limit. If it is not the case – swap the numbers.
+4. Open the file with the given name, generate random numbers and write them in the file, placing each new number on a new line.
+5. Use try/catch block to handle possible IOExceptions.
+6. Your main() must not throw any exceptions.
+Name your solution project RandomsInFile.java.
+ */
+package randomsinfiles;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.stream.IntStream;
+
+/**
+ *
+ * @author agatajelen
+ */
+public class RandomsInFiles {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // First, get a valid filename
+        FileOutputStream f = null;
+        do {
+            System.out.println("Please enter the name of the output file:");
+            String filename = sc.next();
+            try {
+                f = new FileOutputStream(filename);
+            } catch(FileNotFoundException e) {
+                System.err.println(e.getMessage());
+            }
+        } while(f == null);
+
+        // Now, get valid input for the valid range of random numbers
+        int i1=-1, i2=-1;
+        do {
+            System.out.println("Please enter two different positive integers for the range of random numbers to generate:");
+            try {
+                i1 = sc.nextInt();
+                i2 = sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println(sc.next() + " is not a positive integer");
+                continue;
+            }
+            if(i1 < 0 || i2 < 0) System.out.println("Numbers should not be negative");
+            if(i1 == i2) System.out.println("Numbers should be different");
+        } while(i1 <= 0 || i2 <= 0);
+
+        // Because the inputs are not ordered, use min() and max() to make sure we pass the smaller one
+        // for the lower bound, and the bigger one for the upper bound
+        try (PrintWriter output = new PrintWriter(f)) {
+            // Because the inputs are not ordered, use min() and max() to make sure we pass the smaller one
+            // for the lower bound, and the bigger one for the upper bound
+            IntStream s = new Random().ints(100, min(i1, i2), max(i1, i2));
+            for(int i : s.toArray()) {
+                output.println(i);
+            }
+        }
+    }
+}
+
