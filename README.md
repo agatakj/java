@@ -1,3 +1,4 @@
 # java
-Homework Assignments From CSD 141
-Fall 2017
+Assignments from school, books, found online. 
+Practicing programing.
+
